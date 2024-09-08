@@ -53,7 +53,8 @@ public class AtomicDoubleArray implements java.io.Serializable {
    * @param length the length of the array
    */
   public AtomicDoubleArray(int length) {
-    this.longs = new AtomicLongArray(length);
+    ImmutableLongArray.Builder builder = ImmutableLongArray.builder();
+
   }
 
   /**
@@ -258,11 +259,13 @@ public class AtomicDoubleArray implements java.io.Serializable {
 
     // Read in array length and allocate array
     int length = s.readInt();
-    this.longs = new AtomicLongArray(length);
+    ImmutableLongArray.Builder builder = ImmutableLongArray.builder();
+
 
     // Read in all elements in the proper order.
     for (int i = 0; i < length; i++) {
-      set(i, s.readDouble());
+      builder.add(doubleToRawLongBits(s.readDouble()));
+
     }
   }
 }
